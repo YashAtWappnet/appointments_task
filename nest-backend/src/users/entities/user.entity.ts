@@ -4,8 +4,10 @@ import {
   Column,
   CreateDateColumn,
   BeforeInsert,
+  OneToMany,
 } from 'typeorm';
 import { hash } from 'bcrypt';
+import { Appointment } from 'src/appointments/entities/appointment.entity';
 
 export enum UserRole {
   PATIENT = 'patient',
@@ -31,6 +33,12 @@ export class User {
 
   @CreateDateColumn()
   createdAt: Date;
+
+  @OneToMany(() => Appointment, (appointment) => appointment.doctor)
+  doctorAppointments: Appointment[];
+
+  @OneToMany(() => Appointment, (appointment) => appointment.patient)
+  patientAppointments: Appointment[];
 
   @BeforeInsert()
   async hashPassword() {
