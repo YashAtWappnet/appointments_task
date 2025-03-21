@@ -6,37 +6,6 @@ export const Homepage = () => {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Header */}
-      <header className="border-b flex items-center justify-center bg-white">
-        <div className="container flex h-16 items-center justify-between px-4 md:px-6">
-          <Link to="/" className="flex items-center gap-2">
-            <span className="text-xl font-bold text-primary">MediBook</span>
-          </Link>
-          <nav className="hidden md:flex gap-6">
-            <Link
-              to="#features"
-              className="text-sm font-medium hover:text-primary"
-            >
-              Features
-            </Link>
-            <Link to="#" className="text-sm font-medium hover:text-primary">
-              About
-            </Link>
-            <Link to="#" className="text-sm font-medium hover:text-primary">
-              Contact
-            </Link>
-          </nav>
-          <div className="flex items-center gap-4">
-            <Link to="/auth">
-              <Button variant="outline" size="sm" className="hidden md:flex">
-                Sign In
-              </Button>
-            </Link>
-            <Link to="/auth">
-              <Button size="sm">Get Started</Button>
-            </Link>
-          </div>
-        </div>
-      </header>
 
       {/* Hero Section */}
       <section className="w-full flex items-center justify-center py-12 md:py-24 lg:py-32 bg-gradient-to-b from-white to-blue-50">

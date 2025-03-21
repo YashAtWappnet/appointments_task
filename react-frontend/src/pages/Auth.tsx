@@ -18,6 +18,7 @@ import { setUser } from "@/redux/slices/userSlice";
 import { UserRole } from "@/types";
 import { loginUser, registerUser } from "@/api/authservice";
 import { AxiosError } from "axios";
+import { useNavigate } from "react-router";
 
 export const Auth = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,8 @@ export const Auth = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
   const [loginError, setLoginError] = useState<string | null>(null);
   const [showPassword, setShowPassword] = useState(false);
+
+  const navigate = useNavigate();
 
   // State for registration
   const [registerData, setRegisterData] = useState({
@@ -65,6 +68,7 @@ export const Auth = () => {
       // Store token in Redux
       dispatch(setUser(data));
       alert("Login successful");
+      navigate("/dashboard");
     } catch (error) {
       const errorMessage =
         (error as AxiosError<{ message: string }>)?.response?.data?.message ||
