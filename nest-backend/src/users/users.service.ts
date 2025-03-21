@@ -52,7 +52,9 @@ export class UsersService {
 
     const token = this.jwtService.sign({ id: user.id, role: user.role });
 
-    return { access_token: token };
+    delete user.password;
+
+    return { access_token: token, user };
   }
 
   async getUserById(id: number) {

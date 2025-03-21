@@ -8,6 +8,7 @@ import {
 } from 'typeorm';
 import { hash } from 'bcrypt';
 import { Appointment } from 'src/appointments/entities/appointment.entity';
+import { IsOptional } from 'class-validator';
 
 export enum UserRole {
   PATIENT = 'patient',
@@ -26,7 +27,7 @@ export class User {
   email: string;
 
   @Column({ select: false }) // Prevents password from being fetched in queries
-  password: string;
+  password?: string;
 
   @Column({ type: 'enum', enum: UserRole, default: UserRole.PATIENT })
   role: UserRole;
