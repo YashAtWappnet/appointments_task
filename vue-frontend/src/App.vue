@@ -1,32 +1,38 @@
-<script setup lang="ts">
-import HelloWorld from "./components/HelloWorld.vue";
-import { Button } from "@/components/ui/button";
-</script>
-
 <template>
-  <div>
-    <a href="https://vite.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-    <Button>Click me</Button>
+  <div
+    class="min-h-screen bg-gray-100 flex flex-col items-center justify-center gap-4"
+  >
+    <h1 class="text-4xl font-bold text-blue-500">Count: {{ counter.count }}</h1>
+    <Button @click="counter.increment">Increment</Button>
+    <p v-if="post">Post Title: {{ post.title }}</p>
+    <p v-else>Loading...</p>
   </div>
-  <HelloWorld msg="Vite + Vue" />
 </template>
 
-<style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-</style>
+<script>
+import { Button } from "@/components/ui/button";
+import { useCounterStore } from "@/stores/counter";
+import api from "@/services/api";
+
+export default {
+  name: "App",
+  components: { Button },
+  data() {
+    return {
+      post: null,
+    };
+  },
+  setup() {
+    const counter = useCounterStore();
+    return { counter };
+  },
+  async created() {
+    try {
+      const response = await api.get("/posts/3");
+      this.post = response.data;
+    } catch (error) {
+      console.error("Error fetching post:", error);
+    }
+  },
+};
+</script>
