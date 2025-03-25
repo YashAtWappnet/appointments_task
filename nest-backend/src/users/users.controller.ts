@@ -22,7 +22,7 @@ export class UsersController {
     return this.usersService.login(loginDto);
   }
 
-  @Roles([UserRole.DOCTOR])
+  @Roles([UserRole.DOCTOR, UserRole.PATIENT])
   @Get(':id')
   async getUser(@Param('id') id: number) {
     return this.usersService.getUserById(id);

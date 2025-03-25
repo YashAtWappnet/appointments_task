@@ -1,0 +1,255 @@
+<div
+  class="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-white to-blue-50 p-4"
+>
+  <div class="w-full max-w-md">
+    <!-- Back to Home Link -->
+    <a
+      routerLink="/"
+      class="inline-flex items-center text-sm font-medium text-blue-600 mb-6 hover:underline"
+    >
+      <!-- ArrowLeft Icon Placeholder -->
+      <svg
+        class="mr-2 h-4 w-4"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"
+        ></path>
+      </svg>
+      Back to Home
+    </a>
+
+    <!-- Tabs Container -->
+    <div class="w-full">
+      <!-- Tabs List -->
+      <div class="grid w-full grid-cols-2 mb-6">
+        <button
+          class="py-2 px-4 text-sm font-medium text-gray-900 bg-white border-t border-l border-r rounded-tl-md hover:bg-gray-100 focus:outline-none focus:bg-gray-200"
+        >
+          Login
+        </button>
+        <button
+          class="py-2 px-4 text-sm font-medium text-gray-900 bg-white border-t border-r rounded-tr-md hover:bg-gray-100 focus:outline-none focus:bg-gray-200"
+        >
+          Register
+        </button>
+      </div>
+
+      <!-- Login Form (Static) -->
+      <div class="bg-white rounded-md shadow-md">
+        <div class="p-6">
+          <h2 class="text-2xl font-bold">Welcome back</h2>
+          <p class="text-gray-500 mt-1">Sign in to your account</p>
+        </div>
+        <div class="p-6 pt-0 space-y-4">
+          <!-- Email Field -->
+          <div class="space-y-2">
+            <label for="email" class="block text-sm font-medium text-gray-700"
+              >Email</label
+            >
+            <div class="relative">
+              <!-- Mail Icon Placeholder -->
+              <svg
+                class="absolute left-3 top-3 h-4 w-4 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M3 8l9 6 9-6m-18 0v10a2 2 0 002 2h14a2 2 0 002-2V8"
+                ></path>
+              </svg>
+              <input
+                id="email"
+                type="email"
+                placeholder="name@example.com"
+                class="w-full pl-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+            </div>
+          </div>
+          <!-- Password Field -->
+          <div class="space-y-2">
+            <label
+              for="password"
+              class="block text-sm font-medium text-gray-700"
+              >Password</label
+            >
+            <div class="relative">
+              <!-- Lock Icon Placeholder -->
+              <svg
+                class="absolute left-3 top-3 h-4 w-4 text-gray-400"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 11c1.104 0 2-.896 2-2s-.896-2-2-2-2 .896-2 2 .896 2 2 2zm0 2c-1.104 0-2 .896-2 2v3h4v-3c0-1.104-.896-2-2-2zm0-8a4 4 0 00-4 4v1h-2v8a2 2 0 002 2h8a2 2 0 002-2v-8h-2v-1a4 4 0 00-4-4z"
+                ></path>
+              </svg>
+              <input
+                id="password"
+                type="password"
+                placeholder="••••••••"
+                class="w-full pl-10 pr-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <!-- Eye/EyeOff Icon Placeholder -->
+              <svg
+                class="absolute right-3 top-3 h-4 w-4 text-gray-400 cursor-pointer"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0c0 1.657-4.03 3-9 3s-9-1.343-9-3 4.03-3 9-3 9 1.343 9 3zm-18 0h1.535m15.93 0h1.535"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <!-- Error Placeholder (Static) -->
+          <!-- <p class="text-red-500 text-sm">Example error message</p> -->
+        </div>
+        <div class="p-6 pt-0">
+          <button
+            class="w-full py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700"
+          >
+            Sign In
+          </button>
+        </div>
+      </div>
+
+      <!-- Register Form (Static, hidden by default in real logic) -->
+      <div class="bg-white rounded-md shadow-md mt-6 hidden">
+        <div class="p-6">
+          <h2 class="text-2xl font-bold">Create an account</h2>
+          <p class="text-gray-500 mt-1">Enter your details</p>
+        </div>
+        <div class="p-6 pt-0 space-y-4">
+          <!-- Full Name Field -->
+          <div class="space-y-2">
+            <label
+              for="fullName"
+              class="block text-sm font-medium text-gray-700"
+              >Full Name</label
+            >
+            <input
+              id="fullName"
+              placeholder="John Doe"
+              class="w-full pl-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <!-- Email Field -->
+          <div class="space-y-2">
+            <label
+              for="registerEmail"
+              class="block text-sm font-medium text-gray-700"
+              >Email</label
+            >
+            <input
+              id="email"
+              type="email"
+              placeholder="name@example.com"
+              class="w-full pl-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+          <!-- Password Field -->
+          <div class="space-y-2">
+            <label
+              for="registerPassword"
+              class="block text-sm font-medium text-gray-700"
+              >Password</label
+            >
+            <div class="relative">
+              <input
+                id="password"
+                type="password"
+                class="w-full pl-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <!-- Eye/EyeOff Icon Placeholder -->
+              <svg
+                class="absolute right-3 top-3 h-4 w-4 text-gray-400 cursor-pointer"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0c0 1.657-4.03 3-9 3s-9-1.343-9-3 4.03-3 9-3 9 1.343 9 3zm-18 0h1.535m15.93 0h1.535"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <!-- Confirm Password Field -->
+          <div class="space-y-2">
+            <label
+              for="confirmPassword"
+              class="block text-sm font-medium text-gray-700"
+              >Confirm Password</label
+            >
+            <div class="relative">
+              <input
+                id="confirmPassword"
+                type="password"
+                class="w-full pl-10 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <!-- Eye/EyeOff Icon Placeholder -->
+              <svg
+                class="absolute right-3 top-3 h-4 w-4 text-gray-400 cursor-pointer"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0zm6 0c0 1.657-4.03 3-9 3s-9-1.343-9-3 4.03-3 9-3 9 1.343 9 3zm-18 0h1.535m15.93 0h1.535"
+                ></path>
+              </svg>
+            </div>
+          </div>
+          <!-- User Role Dropdown -->
+          <div class="space-y-2">
+            <label
+              for="userRole"
+              class="block text-sm font-medium text-gray-700"
+              >User Role</label
+            >
+            <select
+              id="userRole"
+              class="w-full border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="patient">Patient</option>
+              <option value="doctor">Doctor</option>
+              <!-- Add more roles as needed -->
+            </select>
+          </div>
+          <!-- Error Placeholder (Static) -->
+          <!-- <p class="text-red-500 text-sm">Example error message</p> -->
+        </div>
+        <div class="p-6 pt-0">
+          <button
+            class="w-full py-2 bg-blue-600 text-white font-medium rounded-md hover:bg-blue-700"
+          >
+            Create Account
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,248 @@
+<div class="flex flex-col min-h-screen">
+  <!-- Hero Section -->
+  <section
+    class="w-full flex items-center justify-center py-12 md:py-24 lg:py-32 bg-gradient-to-b from-white to-blue-50"
+  >
+    <div class="container px-4 md:px-6">
+      <div class="grid gap-6 lg:grid-cols-2 lg:gap-12 items-center">
+        <div class="flex flex-col justify-center space-y-4">
+          <div class="space-y-2">
+            <h1
+              class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
+            >
+              Your Health, Your Schedule
+            </h1>
+            <p
+              class="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+            >
+              Book medical appointments with ease. No more waiting on hold or
+              scheduling conflicts.
+            </p>
+          </div>
+          <div class="flex flex-col gap-2 min-[400px]:flex-row">
+            <a
+              routerLink="/auth"
+              class="inline-flex items-center px-6 py-3 bg-blue-600 text-white text-lg font-medium rounded-md hover:bg-blue-700 group"
+            >
+              Get Started
+              <!-- ArrowRight Icon Placeholder -->
+              <svg
+                class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                ></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="flex justify-center">
+          <div
+            class="relative w-full max-w-[500px] aspect-video overflow-hidden rounded-xl bg-blue-100 shadow-lg"
+          >
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="text-center p-6">
+                <!-- Calendar Icon Placeholder -->
+                <svg
+                  class="h-16 w-16 mx-auto mb-4 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  ></path>
+                </svg>
+                <p class="text-lg font-medium">
+                  Schedule your appointments with ease
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section
+    id="features"
+    class="w-full py-12 md:py-24 lg:py-32 flex items-center justify-center"
+  >
+    <div class="container px-4 md:px-6">
+      <div
+        class="flex flex-col items-center justify-center space-y-4 text-center"
+      >
+        <div class="space-y-2">
+          <h2
+            class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
+          >
+            Features that simplify healthcare
+          </h2>
+          <p
+            class="max-w-[900px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+          >
+            Our platform is designed to make medical appointments hassle-free
+          </p>
+        </div>
+      </div>
+      <div
+        class="mx-auto grid max-w-5xl items-center gap-6 py-12 lg:grid-cols-3"
+      >
+        <div
+          class="flex flex-col items-center space-y-4 rounded-lg border p-6 shadow-sm"
+        >
+          <!-- Calendar Icon Placeholder -->
+          <svg
+            class="h-12 w-12 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            ></path>
+          </svg>
+          <h3 class="text-xl font-bold">Easy Scheduling</h3>
+          <p class="text-center text-gray-500">
+            Book appointments with just a few clicks, anytime and anywhere.
+          </p>
+        </div>
+        <div
+          class="flex flex-col items-center space-y-4 rounded-lg border p-6 shadow-sm"
+        >
+          <!-- Clock Icon Placeholder -->
+          <svg
+            class="h-12 w-12 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+            ></path>
+          </svg>
+          <h3 class="text-xl font-bold">Manage Appointments</h3>
+          <p class="text-center text-gray-500">
+            View, reschedule, or cancel your appointments with ease.
+          </p>
+        </div>
+        <div
+          class="flex flex-col items-center space-y-4 rounded-lg border p-6 shadow-sm"
+        >
+          <!-- Shield Icon Placeholder -->
+          <svg
+            class="h-12 w-12 text-blue-600"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+            ></path>
+          </svg>
+          <h3 class="text-xl font-bold">Secure Authentication</h3>
+          <p class="text-center text-gray-500">
+            Your personal information is protected with our secure
+            authentication system.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section
+    class="w-full py-12 md:py-24 lg:py-32 bg-blue-600 text-white flex items-center justify-center"
+  >
+    <div class="container px-4 md:px-6">
+      <div
+        class="flex flex-col items-center justify-center space-y-4 text-center"
+      >
+        <div class="space-y-2">
+          <h2
+            class="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl"
+          >
+            Ready to simplify your healthcare?
+          </h2>
+          <p
+            class="max-w-[600px] text-white/80 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed"
+          >
+            Join thousands of patients who have made their healthcare journey
+            smoother.
+          </p>
+        </div>
+        <div class="flex flex-col gap-2 min-[400px]:flex-row">
+          <a
+            routerLink="/auth"
+            class="inline-flex items-center px-6 py-3 bg-white text-blue-600 text-lg font-medium rounded-md hover:bg-gray-100 group"
+          >
+            Sign Up Now
+            <!-- ArrowRight Icon Placeholder -->
+            <svg
+              class="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 5l7 7-7 7"
+              ></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="border-t bg-white flex items-center justify-center">
+    <div
+      class="container flex flex-col gap-4 py-10 md:flex-row md:items-center md:justify-between md:py-12 px-4 md:px-6"
+    >
+      <div class="flex flex-col gap-2">
+        <a routerLink="/" class="flex items-center gap-2">
+          <span class="text-lg font-bold text-blue-600">MediBook</span>
+        </a>
+        <p class="text-sm text-gray-500">
+          © {{ currentYear }} MediBook. All rights reserved.
+        </p>
+      </div>
+      <nav class="flex gap-4 sm:gap-6">
+        <a
+          href="#"
+          class="text-sm font-medium hover:underline underline-offset-4"
+        >
+          Privacy Policy
+        </a>
+        <a
+          href="#"
+          class="text-sm font-medium hover:underline underline-offset-4"
+        >
+          Contact Us
+        </a>
+      </nav>
+    </div>
+  </footer>
+</div>
