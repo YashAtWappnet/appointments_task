@@ -1,3 +1,392 @@
-<div class="p-4 bg-blue-500 text-white">
-  <h1 class="text-2xl font-bold">Dashboard</h1>
+<div class="min-h-screen flex flex-col bg-gradient-to-b from-white to-blue-50">
+  <main class="container px-4 py-6 md:py-10 flex-1">
+    <ng-container *ngIf="user$ | async as user; else notLoggedIn">
+      <!-- Top Section -->
+      <div
+        class="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4"
+      >
+        <div>
+          <h1 class="text-3xl font-bold tracking-tight">
+            {{
+              user.role === "patient"
+                ? "My Appointments"
+                : "Patient Appointments"
+            }}
+          </h1>
+          <p class="text-gray-500">
+            {{
+              user.role === "patient"
+                ? "Manage your upcoming medical appointments"
+                : "View and manage your scheduled patient appointments"
+            }}
+          </p>
+        </div>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <!-- Date Picker (Simplified) -->
+          <input
+            #dateInput
+            type="date"
+            [value]="date | date : 'yyyy-MM-dd'"
+            (change)="date = dateInput.valueAsDate!"
+            class="border border-gray-300 rounded-md p-2"
+          />
+          <button
+            *ngIf="user.role === 'patient'"
+            (click)="isNewAppointmentOpen = true"
+            class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+          >
+            <svg
+              class="inline mr-2 h-4 w-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 4v16m8-8H4"
+              ></path>
+            </svg>
+            New Appointment
+          </button>
+        </div>
+      </div>
+
+      <!-- Appointments List -->
+      <ng-container *ngIf="appointments$ | async as appointments">
+        <div
+          *ngIf="appointments.length > 0; else noAppointments"
+          class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+        >
+          <div
+            *ngFor="let appointment of appointments$ | async"
+            (click)="handleAppointmentClick(appointment)"
+            class="cursor-pointer border-l-4 p-4 bg-white rounded-md shadow-md hover:shadow-lg"
+            [ngClass]="{
+              'border-l-green-500': appointment.status === 'Completed',
+              'border-l-blue-600': appointment.status !== 'Completed'
+            }"
+          >
+            <div class="flex justify-between items-start">
+              <h3 class="font-bold">
+                {{
+                  user.role === "patient"
+                    ? appointment.doctor.name
+                    : appointment.patient.name
+                }}
+              </h3>
+              <span
+                class="px-2 py-1 rounded-full text-xs font-medium"
+                [ngClass]="{
+                  'bg-green-100 text-green-800':
+                    appointment.status === 'Completed',
+                  'bg-blue-100 text-blue-800':
+                    appointment.status !== 'Completed'
+                }"
+              >
+                {{ appointment.status }}
+              </span>
+            </div>
+            <p class="text-gray-500">{{ appointment.reason }}</p>
+            <div class="flex items-center text-sm mt-2">
+              <svg
+                class="mr-2 h-4 w-4 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                ></path>
+              </svg>
+              {{ formatDate(appointment.date) }}
+            </div>
+            <div class="flex items-center text-sm mt-1">
+              <svg
+                class="mr-2 h-4 w-4 text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                ></path>
+              </svg>
+              {{ formatTime(appointment.date) }}
+            </div>
+          </div>
+        </div>
+      </ng-container>
+
+      <!-- No Appointments -->
+      <ng-template #noAppointments>
+        <div
+          class="flex flex-col items-center justify-center py-12 text-center"
+        >
+          <svg
+            class="h-12 w-12 text-gray-500 mb-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+            ></path>
+          </svg>
+          <h3 class="text-lg font-medium">No appointments found</h3>
+          <p class="text-gray-500 mt-1">
+            {{
+              user.role === "patient"
+                ? "You don’t have any appointments scheduled for this date."
+                : "You don’t have any patient appointments scheduled for this date."
+            }}
+          </p>
+          <button
+            *ngIf="user.role === 'patient'"
+            (click)="isNewAppointmentOpen = true"
+            class="mt-4 border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50"
+          >
+            Schedule an appointment
+          </button>
+        </div>
+      </ng-template>
+
+      <!-- Appointment Details Modal -->
+      <div
+        *ngIf="isDetailsOpen"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      >
+        <div class="bg-white rounded-md p-6 w-full max-w-md">
+          <h2 class="text-xl font-bold">Appointment Details</h2>
+          <p class="text-gray-500">View or modify your appointment details</p>
+          <div class="space-y-4 mt-4">
+            <div class="flex items-start gap-4">
+              <div
+                class="h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center"
+              >
+                <svg
+                  class="h-5 w-5 text-blue-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                  ></path>
+                </svg>
+              </div>
+              <h3 class="font-medium">
+                {{
+                  user.role === "patient"
+                    ? selectedAppointment?.doctor?.name
+                    : selectedAppointment?.patient?.name
+                }}
+              </h3>
+            </div>
+            <div class="space-y-2">
+              <div class="flex items-center">
+                <svg
+                  class="mr-2 h-4 w-4 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                  ></path>
+                </svg>
+                {{ formatDate(selectedAppointment?.date || "") }}
+              </div>
+              <div class="flex items-center">
+                <svg
+                  class="mr-2 h-4 w-4 text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  ></path>
+                </svg>
+                {{ formatTime(selectedAppointment?.date || "") }}
+              </div>
+              <div class="flex items-center">
+                <svg
+                  class="mr-2 h-4 w-4"
+                  [ngClass]="{
+                    'text-green-500':
+                      selectedAppointment?.status === 'Completed',
+                    'text-blue-600': selectedAppointment?.status !== 'Completed'
+                  }"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    [attr.d]="
+                      selectedAppointment?.status === 'Completed'
+                        ? 'M5 13l4 4L19 7'
+                        : 'M12 9v2m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z'
+                    "
+                  ></path>
+                </svg>
+                {{ selectedAppointment?.status }}
+              </div>
+            </div>
+            <div>
+              <h4 class="text-sm font-medium mb-1">
+                {{ user.role === "patient" ? "Notes" : "Reason for Visit" }}
+              </h4>
+              <p class="text-sm text-gray-500">
+                {{ selectedAppointment?.reason }}
+              </p>
+            </div>
+          </div>
+          <div class="flex justify-between mt-6">
+            <button
+              (click)="isDetailsOpen = false"
+              class="border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              *ngIf="user.role === 'doctor'"
+              (click)="handleStatusChange()"
+              class="px-4 py-2 rounded-md"
+              [ngClass]="{
+                'bg-blue-600 text-white hover:bg-blue-700':
+                  selectedAppointment?.status !== 'Completed',
+                'border border-gray-300 hover:bg-gray-50':
+                  selectedAppointment?.status === 'Completed'
+              }"
+            >
+              {{
+                selectedAppointment?.status === "Completed"
+                  ? "Mark as Scheduled"
+                  : "Mark as Completed"
+              }}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- New Appointment Modal -->
+      <div
+        *ngIf="isNewAppointmentOpen"
+        class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
+      >
+        <div class="bg-white rounded-md p-6 w-full max-w-md">
+          <h2 class="text-xl font-bold">Schedule New Appointment</h2>
+          <p class="text-gray-500">
+            Fill in the details to book your appointment.
+          </p>
+          <form
+            [formGroup]="newAppointmentForm"
+            (ngSubmit)="handleScheduleAppointment()"
+            class="space-y-4 mt-4"
+          >
+            <div class="space-y-2">
+              <label for="doctor" class="block text-sm font-medium"
+                >Select Doctor</label
+              >
+              <select
+                id="doctor"
+                formControlName="doctor"
+                class="w-full border border-gray-300 rounded-md p-2"
+              >
+                <option value="">Select a doctor</option>
+                <option *ngFor="let doctor of doctors" [value]="doctor.id">
+                  {{ doctor.name }} - {{ doctor.specialty }}
+                </option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div class="space-y-2">
+                <label for="date" class="block text-sm font-medium">Date</label>
+                <input
+                  id="date"
+                  type="date"
+                  formControlName="date"
+                  class="w-full border border-gray-300 rounded-md p-2"
+                />
+              </div>
+              <div class="space-y-2">
+                <label for="time" class="block text-sm font-medium">Time</label>
+                <select
+                  id="time"
+                  formControlName="time"
+                  class="w-full border border-gray-300 rounded-md p-2"
+                >
+                  <option value="09:00">9:00 AM</option>
+                  <option value="10:00">10:00 AM</option>
+                  <option value="11:00">11:00 AM</option>
+                  <option value="13:00">1:00 PM</option>
+                  <option value="14:00">2:00 PM</option>
+                  <option value="15:00">3:00 PM</option>
+                  <option value="16:00">4:00 PM</option>
+                </select>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <label for="reason" class="block text-sm font-medium"
+                >Reason</label
+              >
+              <input
+                id="reason"
+                formControlName="reason"
+                placeholder="Any specific concerns"
+                class="w-full border border-gray-300 rounded-md p-2"
+              />
+            </div>
+            <div class="flex justify-end gap-2">
+              <button
+                type="button"
+                (click)="isNewAppointmentOpen = false"
+                class="border border-gray-300 px-4 py-2 rounded-md hover:bg-gray-50"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+              >
+                Schedule Appointment
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </ng-container>
+
+    <!-- Not Logged In -->
+    <ng-template #notLoggedIn>
+      <div class="flex justify-center items-center h-full">
+        <h1 class="text-3xl font-bold tracking-tight text-center">
+          You need to be logged in to access this page.
+        </h1>
+      </div>
+    </ng-template>
+  </main>
 </div>

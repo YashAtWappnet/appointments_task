@@ -32,7 +32,7 @@ export const Auth = () => {
 
   // State for registration
   const [registerData, setRegisterData] = useState({
-    fullName: "",
+    name: "",
     email: "",
     password: "",
     role: UserRole.PATIENT,
@@ -89,7 +89,7 @@ export const Auth = () => {
 
     try {
       const res = await registerUser(
-        registerData.fullName,
+        registerData.name,
         registerData.email,
         registerData.role,
         registerData.password
@@ -106,7 +106,7 @@ export const Auth = () => {
       setRegisterError(errorMessage);
     } finally {
       setRegisterData({
-        fullName: "",
+        name: "",
         email: "",
         password: "",
         role: UserRole.PATIENT,
@@ -202,12 +202,12 @@ export const Auth = () => {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
-                  <Label htmlFor="fullName">Full Name</Label>
+                  <Label htmlFor="name">Full Name</Label>
                   <Input
-                    id="fullName"
+                    id="name"
                     placeholder="John Doe"
                     className="pl-10"
-                    value={registerData.fullName}
+                    value={registerData.name}
                     onChange={(e) => handleChange(e, "register")}
                   />
                 </div>
