@@ -244,6 +244,7 @@ export default defineComponent({
     const handleLogin = async () => {
       loginError.value = null;
       try {
+        console.log("loginData", loginData.value);
         const res = await api.post("/users/login", {
           email: loginData.value.email,
           password: loginData.value.password,

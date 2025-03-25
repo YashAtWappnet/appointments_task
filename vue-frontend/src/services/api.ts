@@ -5,9 +5,6 @@ const API_BASE_URL = "http://localhost:3000"; // Change this as per your backend
 
 const api = axios.create({
   baseURL: API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-  },
 });
 
 // Add an interceptor to attach tokens to requests (if authentication is needed)

@@ -41,9 +41,17 @@
                   class="w-full sm:w-auto justify-start text-left font-normal"
                 >
                   <CalendarIcon class="mr-2 h-4 w-4" />
-                  {{ date ? format(date, "PPP") : "Pick a date" }}
+                  {{
+                    date
+                      ? format(
+                          new Date(date.year, date.month - 1, date.day),
+                          "PPP"
+                        )
+                      : "Pick a date"
+                  }}
                 </Button>
               </PopoverTrigger>
+
               <PopoverContent class="w-auto p-0">
                 <Calendar v-model="date" mode="single" :initial-focus="true" />
               </PopoverContent>
@@ -331,7 +339,14 @@
                         <CalendarIcon class="mr-2 h-4 w-4" />
                         {{
                           newAppointment.date
-                            ? format(newAppointment.date, "PPP")
+                            ? format(
+                                new Date(
+                                  newAppointment.date.year,
+                                  newAppointment.date.month - 1,
+                                  newAppointment.date.day
+                                ),
+                                "PPP"
+                              )
                             : "Pick a date"
                         }}
                       </Button>
@@ -342,10 +357,18 @@
                         mode="single"
                         initial-focus
                         :disabled="
-                          (date) =>
-                            date < new Date() ||
-                            date.getDay() === 0 ||
-                            date.getDay() === 6
+                          (dateValue:DateValue) => {
+                            const date = new Date(
+                              dateValue.year,
+                              dateValue.month - 1,
+                              dateValue.day
+                            );
+                            return (
+                              date < new Date() ||
+                              date.getDay() === 0 ||
+                              date.getDay() === 6
+                            );
+                          }
                         "
                       />
                     </PopoverContent>
@@ -442,6 +465,8 @@ import {
 } from "lucide-vue-next";
 import { AppointmentStatus, UserRole, type Appointment } from "@/types";
 import api from "@/services/api";
+import { CalendarDate, type DateValue } from "@internationalized/date";
+import type { AcceptableValue } from "reka-ui";
 // import CalendarPlus2Icon from 'lucide-vue-next/dist/esm/icons/calendar-plus-2';
 
 // Mock doctors data
@@ -490,18 +515,31 @@ export default defineComponent({
   setup() {
     const store = useUserStore();
     const appointments = ref<Appointment[]>([]);
-    const date = ref<Date | undefined>(new Date());
+    const date = ref<DateValue | undefined>();
     const selectedAppointment = ref<Appointment | null>(null);
     const isDetailsOpen = ref(false);
     const isNewAppointmentOpen = ref(false);
-    const rescheduleDate = ref<Date | undefined>(new Date());
+    const rescheduleDate = ref<DateValue | undefined>();
     const rescheduleTime = ref<string>("");
 
-    const userRole = UserRole;
+    const today = new Date();
+    const initialDate: DateValue = new CalendarDate(
+      today.getFullYear(),
+      today.getMonth() + 1,
+      today.getDate()
+    );
 
-    const newAppointment = ref({
+    interface NewAppointment {
+      doctor: string;
+      date: DateValue | undefined;
+      time: string;
+      duration: number;
+      reason: string;
+    }
+
+    const newAppointment = ref<NewAppointment>({
       doctor: "",
-      date: new Date() as Date | undefined,
+      date: initialDate,
       time: "09:00",
       duration: 30,
       reason: "",
@@ -519,7 +557,13 @@ export default defineComponent({
 
     const handleAppointmentClick = (appointment: Appointment) => {
       selectedAppointment.value = { ...appointment }; // Clone to avoid mutating original
-      rescheduleDate.value = new Date(appointment.date);
+
+      const appointmentDate = new Date(appointment.date); // Assuming appointment.date is a valid date
+      rescheduleDate.value = new CalendarDate(
+        appointmentDate.getFullYear(),
+        appointmentDate.getMonth() + 1,
+        appointmentDate.getDate()
+      );
       rescheduleTime.value = appointment.time.slice(0, 5); // HH:mm format
       isDetailsOpen.value = true;
     };
@@ -541,22 +585,16 @@ export default defineComponent({
       }
     };
 
-    const updateAppointmentDate = (newDate: Date) => {
-      if (selectedAppointment.value && newDate) {
-        const updatedDate = new Date(selectedAppointment.value.date);
-        updatedDate.setFullYear(
-          newDate.getFullYear(),
-          newDate.getMonth(),
-          newDate.getDate()
-        );
-        selectedAppointment.value.date = updatedDate
-          .toISOString()
-          .split("T")[0]; // YYYY-MM-DD
+    const updateAppointmentDate = (date?: DateValue) => {
+      if (selectedAppointment.value && date) {
+        selectedAppointment.value.date = `${date.year}-${String(
+          date.month
+        ).padStart(2, "0")}-${String(date.day).padStart(2, "0")}`; // YYYY-MM-DD
       }
     };
 
-    const updateAppointmentTime = (newTime: string) => {
-      if (selectedAppointment.value) {
+    const updateAppointmentTime = (newTime: AcceptableValue) => {
+      if (typeof newTime === "string" && selectedAppointment.value) {
         selectedAppointment.value.time = newTime + ":00"; // Add seconds for consistency
       }
     };
@@ -565,11 +603,18 @@ export default defineComponent({
       try {
         const res = await api.post("/appointments", {
           doctorId: Number(newAppointment.value.doctor),
-          date: newAppointment.value.date.toISOString().split("T")[0], // YYYY-MM-DD
+          date: newAppointment.value.date
+            ? `${newAppointment.value.date.year}-${String(
+                newAppointment.value.date.month
+              ).padStart(2, "0")}-${String(
+                newAppointment.value.date.day
+              ).padStart(2, "0")}`
+            : undefined,
           time: newAppointment.value.time + ":00", // HH:mm:ss
           duration: newAppointment.value.duration,
           reason: newAppointment.value.reason,
         });
+
         appointments.value.push(res.data);
         isNewAppointmentOpen.value = false;
       } catch (error) {
